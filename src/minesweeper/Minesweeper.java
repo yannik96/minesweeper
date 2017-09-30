@@ -1,4 +1,4 @@
-package minesweeper_new;
+package minesweeper;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -21,7 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import minesweeper_new.enums.Difficulty;
+import minesweeper.enums.Difficulty;
 
 /**
  * a class for modelling a minesweeper game

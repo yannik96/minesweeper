@@ -1,6 +1,6 @@
-package minesweeper_new;
+package minesweeper;
 
-import minesweeper_new.enums.Difficulty;
+import minesweeper.enums.Difficulty;
 
 /**
  * 

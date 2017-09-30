@@ -1,4 +1,4 @@
-package minesweeper_new.enums;
+package minesweeper.enums;
 
 /**
  * @author Yannik Klein

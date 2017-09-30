@@ -1,4 +1,4 @@
-package minesweeper_new;
+package minesweeper;
 
 import java.awt.Color;
 
