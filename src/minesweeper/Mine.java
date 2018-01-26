@@ -1,29 +1,33 @@
 package minesweeper;
 
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
-/**
- * a class for modelling a mine
- * @author Yannik Klein
- */
 public class Mine extends Field {
 
-	public Mine(int row, int column) {
-		super(row, column);
-		image = "mine.png";
+	public Mine(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
+		super(minesweeper, fieldRevealer, position);
+		imageFile = "mine.png";
+		addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+				  Field field = ((Field) e.getSource());
+				  onLeftClick(field); 
+			  }
+		 });
+	}
+	
+	public void onLeftClick(Field clickedField) {
+		fieldRevealer.reveal(clickedField);
+		  minesweeper.setLost();
 	}
 
 	@Override
 	public void reveal() {
+		if (!minesweeper.isRunning() || revealed)
+			return;
 		revealed = true;
-		
-		this.setEnabled(false);
-		this.setIcon(new ImageIcon("Images/" + getImage()));
-		this.setDisabledIcon(new ImageIcon("Images/" + getImage()));
-		this.setBackground(Color.WHITE);
-	}
+		revealButton();
+		fieldRevealer.revealCompleteField();;
+	}	
 
 }
