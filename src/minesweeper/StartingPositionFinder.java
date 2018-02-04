@@ -13,8 +13,8 @@ public class StartingPositionFinder {
 	
 	public StartingPositionFinder(Field[][] field) {
 		this.field = field;
-		this.numberOfRows = field[0].length;
-		this.numberOfColumns = field.length;
+		this.numberOfRows = field.length;
+		this.numberOfColumns = field[0].length;
 	}
 	
 	public Position find() {

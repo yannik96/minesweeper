@@ -11,8 +11,8 @@ public class FieldRevealer {
 	
 	public FieldRevealer(Field[][] field) {
 		this.field = field;
-		this.numberOfRows = field[0].length;
-		this.numberOfColumns = field.length;
+		this.numberOfRows = field.length;
+		this.numberOfColumns = field[0].length;
 	}
 	
 	public void reveal(Field revealedField) {
