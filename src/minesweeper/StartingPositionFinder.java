@@ -3,6 +3,7 @@ package minesweeper;
 import java.util.ArrayList;
 import java.util.Random;
 
+/** A class performing the search for a suitable starting position. **/
 public class StartingPositionFinder {
 	
 	private Field[][] field;
@@ -10,25 +11,29 @@ public class StartingPositionFinder {
 	private int numberOfColumns;
 	
 	private ArrayList<Position> emptyFields = new ArrayList<Position>();
-	
+
+
 	public StartingPositionFinder(Field[][] field) {
 		this.field = field;
 		this.numberOfRows = field.length;
 		this.numberOfColumns = field[0].length;
 	}
-	
+
+
 	public Position find() {
 		findAllPossibleStartingPositions();
 		return randomlySelectStartingPosition();
 	}
-	
+
+
 	public void findAllPossibleStartingPositions() {
 		for (int row = 0; row < numberOfRows; row++)
 			for (int column = 0; column < numberOfColumns; column++)
 				if (isEmptyField(field[row][column]))
 					emptyFields.add(new Position(row, column)); 
 	}
-	
+
+
 	public boolean isEmptyField(Field field) {
 		if (!(field instanceof Value))
 			return false;
@@ -36,7 +41,8 @@ public class StartingPositionFinder {
 		int value = valueField.getValue();
 		return (value == 0);
 	}
-	
+
+
 	public Position randomlySelectStartingPosition() {
 		Random generator = new Random();
 		int amountOfEmptyFields = emptyFields.size();

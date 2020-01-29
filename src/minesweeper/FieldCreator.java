@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+/** Sets up a field, i.e. creates specified number of mines and surrounding field values. **/
 public class FieldCreator {
 	
 	private Minesweeper minesweeper;
@@ -17,7 +18,8 @@ public class FieldCreator {
 	private Set<Position> mines = new HashSet<Position>();
 	
 	private FieldRevealer fieldRevealer;
-	
+
+
 	public FieldCreator(Minesweeper minesweeper, int rows, int columns, int mines) {
 		this.minesweeper = minesweeper;
 		this.numberOfRows = rows;
@@ -26,19 +28,22 @@ public class FieldCreator {
 		this.field = new Field[rows][columns];
 		this.fieldRevealer = new FieldRevealer(field);
 	}
-	
+
+
 	public Field[][] generate() {
 		generateMines();
 		setField();
 		calculateFieldValues();
 		return field;
 	}
-	
+
+
 	public void generateMines() {
 		while (mines.size() < numberOfMines)
 			generateMine();
 	}
-	
+
+
 	public void generateMine() {
 		Random generator = new Random();
 		int row = generator.nextInt(numberOfRows);
@@ -47,7 +52,8 @@ public class FieldCreator {
 		if (!isPositionAMine(position)) 
 			mines.add(position);
 	}
-	
+
+
 	public boolean isPositionAMine(Position position) {
 		int row = position.row;
 		int column = position.column;
@@ -59,7 +65,9 @@ public class FieldCreator {
 		}
 		return false;
 	}
-	
+
+
+	/** Set field classes to be either mines or fields. **/
 	public void setField() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
@@ -72,7 +80,8 @@ public class FieldCreator {
 			}
 		}
 	}
-	
+
+
 	public void calculateFieldValues() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
@@ -82,7 +91,8 @@ public class FieldCreator {
 			}	
 		}
 	}
-	
+
+
 	public void increaseValueInSurroundingFields(Position centerPosition) {
 		for (int row = centerPosition.row-1; row <= centerPosition.row+1; row++) {
 			for (int column = centerPosition.column-1; column <= centerPosition.column+1; column++) {
@@ -92,7 +102,8 @@ public class FieldCreator {
 			}	
 		}
 	}
-	
+
+
 	public boolean isPositionInBoundary(Position position) {
 		int row = position.row;
 		int column = position.column;
@@ -100,7 +111,8 @@ public class FieldCreator {
 		boolean isInColumnBoundary = column >= 0 && column < numberOfColumns;
 		return isInRowBoundary && isInColumnBoundary;
 	}
-	
+
+
 	public void increaseValueOfField(Field field) {
 		if (!(field instanceof Value))
 			return;

@@ -3,7 +3,9 @@ package minesweeper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/** A class representing a mine. **/
 public class Mine extends Field {
+
 
 	public Mine(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
 		super(minesweeper, fieldRevealer, position);
@@ -15,11 +17,13 @@ public class Mine extends Field {
 			  }
 		 });
 	}
-	
+
+
 	public void onLeftClick(Field clickedField) {
 		fieldRevealer.reveal(clickedField);
-		  minesweeper.setLost();
+		minesweeper.setLost();
 	}
+
 
 	@Override
 	public void reveal() {
@@ -27,7 +31,7 @@ public class Mine extends Field {
 			return;
 		revealed = true;
 		revealButton();
-		fieldRevealer.revealCompleteField();;
+		fieldRevealer.revealEntireField();;
 	}	
 
 }

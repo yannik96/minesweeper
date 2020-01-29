@@ -3,9 +3,11 @@ package minesweeper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/** A class representing a value, i.e. fields that are not a mine. **/
 public class Value extends Field {
 	
 	private int value = 0;
+
 
 	public Value(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
 		super(minesweeper, fieldRevealer, position);
@@ -18,6 +20,7 @@ public class Value extends Field {
 		 });
 	}
 
+
 	@Override
 	public void reveal() {
 		if (revealed)
@@ -28,7 +31,8 @@ public class Value extends Field {
 		revealButton();
 		fieldRevealer.reveal(this);
 	}
-	
+
+
 	public void increaseValue() {
 		value++;
 		updateImageFile();

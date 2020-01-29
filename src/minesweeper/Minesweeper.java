@@ -12,8 +12,10 @@ import javax.swing.JOptionPane;
 
 import minesweeper.enums.Difficulty;
 
+/** A class defining the application interface and basic game logic. **/
 public class Minesweeper extends JFrame {
-	
+
+	/** General difficulty settings. **/
 	public static final int EASY_ROWS = 9;
 	public static final int EASY_COLUMNS = 9;
 	public static final int EASY_MINES = 10;
@@ -25,19 +27,22 @@ public class Minesweeper extends JFrame {
 	public static final int EXPERT_ROWS = 16;
 	public static final int EXPERT_COLUMNS = 32;
 	public static final int EXPERT_MINES = 99;
-	
-	public static int WIDTH;
-	public static int HEIGHT;
-	
+
+
+	/** Chosen difficulty settings. **/
 	private Difficulty difficulty;
-	
-	private boolean running;
 	
 	private int numberOfRows;
 	private int numberOfColumns;
 	private int numberOfMines;
 
 	private Field[][] field;
+
+	public static int WIDTH;
+	public static int HEIGHT;
+
+	private boolean running;
+
 
 	public Minesweeper() {
 		super("Minesweeper");
@@ -123,12 +128,14 @@ public class Minesweeper extends JFrame {
 		
 		setJMenuBar(menuBar);
 	}
-	
+
+
 	public void initializeField() {
 		createField();
 		running = true;
 		revealStartingPosition();
 	}
+
 
 	public void createField() {
 		FieldCreator fieldCreator = new FieldCreator(this, numberOfRows, numberOfColumns, numberOfMines);
@@ -137,46 +144,58 @@ public class Minesweeper extends JFrame {
 			for (int column = 0; column < numberOfColumns; column++)
 				add(field[row][column]);
 	}
-	
+
+
 	public void revealStartingPosition() {
 		StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
 		Position startingPosition = startingPositionFinder.find();
 		Field startingField = getFieldByPosition(startingPosition);
 		startingField.reveal();
 	}
-	
+
+
 	public Field getFieldByPosition(Position position) {
 		return field[position.row][position.column];
 	}
-	
+
+
+	/** Checks whether the game is won. **/
 	public void checkVictory() {
 		boolean won = true;
 		for (int i = 0; i < numberOfRows; i++) {
 			for (int e = 0; e < numberOfColumns; e++) {
-				if (field[i][e].isEnabled() == true) won = false;
-				if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag") won = false;
+				// there exists a field that has not been clicked yet (right or left)
+				if (field[i][e].isEnabled() == true)
+					won = false;
+				// there exists a field that is not a mine but has been flagged as such
+				if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag")
+					won = false;
 			}
 		}
+		// announce win and stop game
 		if (won) {
 			running = false;
-			JOptionPane.showMessageDialog(null, "Congratulations! You rule! ", "Information", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Congratulations, you have won!", "Information", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-	
+
+
+	/** Stops the game if it is lost. **/
 	public void setLost() {
 		JOptionPane.showMessageDialog(null, "You have lost.", "Information", JOptionPane.INFORMATION_MESSAGE);
 		running = false;
 	}
-	
+
+
 	public void newGame(Difficulty difficulty) {
 		new Minesweeper(difficulty);
 		this.dispose();
 	}
-	
+
 	public Difficulty getDifficulty() {
 		return difficulty;
 	}
-	
+
 	public boolean isRunning() {
 		return running;
 	}
