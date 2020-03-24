@@ -26,7 +26,7 @@ public class FieldRevealer {
 	}
 
 
-	public void revealValue(Value revealedField) {
+	private void revealValue(Value revealedField) {
 		int value = revealedField.getValue();
 		// only reveal surrounding values if does not have a value
 		if (value == 0)
@@ -34,7 +34,7 @@ public class FieldRevealer {
 	}
 
 
-	public void revealSurroundingFields(Field revealedField) {
+	private void revealSurroundingFields(Field revealedField) {
 		Position revealedPosition = revealedField.getPosition();
 		for (int row = revealedPosition.row-1; row <= revealedPosition.row+1; row++) {
 			for (int column = revealedPosition.column-1; column <= revealedPosition.column+1; column++) {
@@ -78,12 +78,12 @@ public class FieldRevealer {
 	}
 
 
-	public boolean isMine(Field field) {
+	private boolean isMine(Field field) {
 		return (field instanceof Mine);
 	}
 
 
-	public void setIncorrectlyTagged(Field field) {
+	private void setIncorrectlyTagged(Field field) {
 		// TODO: central resource manager
 		ImageIcon noMineIcon = new ImageIcon(getClass().getClassLoader().getResource("nomine.png"));
 		field.setIcon(noMineIcon);

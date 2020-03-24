@@ -40,7 +40,7 @@ public abstract class Field extends JButton {
 	}
 
 
-	public void onRightClick(Field taggedField) {
+	private void onRightClick(Field taggedField) {
 		if (!minesweeper.isRunning())
 			return;
 		// field can be clicked or is tagged with a flag

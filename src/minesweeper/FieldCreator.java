@@ -38,13 +38,13 @@ public class FieldCreator {
 	}
 
 
-	public void generateMines() {
+	private void generateMines() {
 		while (mines.size() < numberOfMines)
 			generateMine();
 	}
 
 
-	public void generateMine() {
+	private void generateMine() {
 		Random generator = new Random();
 		int row = generator.nextInt(numberOfRows);
 		int column = generator.nextInt(numberOfColumns);
@@ -54,7 +54,7 @@ public class FieldCreator {
 	}
 
 
-	public boolean isPositionAMine(Position position) {
+	private boolean isPositionAMine(Position position) {
 		int row = position.row;
 		int column = position.column;
 		for (Position mine : mines) {
@@ -68,7 +68,7 @@ public class FieldCreator {
 
 
 	/** Set field classes to be either mines or fields. **/
-	public void setField() {
+	private void setField() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
 				Position position = new Position(row, column);	
@@ -82,7 +82,7 @@ public class FieldCreator {
 	}
 
 
-	public void calculateFieldValues() {
+	private void calculateFieldValues() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
 				Position position = new Position(row, column);
@@ -93,7 +93,7 @@ public class FieldCreator {
 	}
 
 
-	public void increaseValueInSurroundingFields(Position centerPosition) {
+	private void increaseValueInSurroundingFields(Position centerPosition) {
 		for (int row = centerPosition.row-1; row <= centerPosition.row+1; row++) {
 			for (int column = centerPosition.column-1; column <= centerPosition.column+1; column++) {
 				Position position = new Position(row, column);
@@ -104,7 +104,7 @@ public class FieldCreator {
 	}
 
 
-	public boolean isPositionInBoundary(Position position) {
+	private boolean isPositionInBoundary(Position position) {
 		int row = position.row;
 		int column = position.column;
 		boolean isInRowBoundary = row >= 0 && row < numberOfRows;
@@ -113,7 +113,7 @@ public class FieldCreator {
 	}
 
 
-	public void increaseValueOfField(Field field) {
+	private void increaseValueOfField(Field field) {
 		if (!(field instanceof Value))
 			return;
 		Value valueField = (Value) field;

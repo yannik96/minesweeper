@@ -56,7 +56,7 @@ public class Minesweeper extends JFrame {
 		initialize();
 	}
 	
-	public void initialize() {
+	private void initialize() {
 		setDimension();
 		initializeField();
 		createWindow();
@@ -84,7 +84,7 @@ public class Minesweeper extends JFrame {
 		HEIGHT = 40 * numberOfRows;
 	}
 	
-	public void createWindow() {
+	private void createWindow() {
 		setSize(WIDTH, HEIGHT);
 		Container pane = getContentPane();
 		pane.setLayout(new GridLayout(numberOfRows, numberOfColumns));
@@ -93,7 +93,7 @@ public class Minesweeper extends JFrame {
 		setVisible(true);
 	}
 	
-	public void createMenu() {
+	private void createMenu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -130,14 +130,14 @@ public class Minesweeper extends JFrame {
 	}
 
 
-	public void initializeField() {
+	private void initializeField() {
 		createField();
 		running = true;
 		revealStartingPosition();
 	}
 
 
-	public void createField() {
+	private void createField() {
 		FieldCreator fieldCreator = new FieldCreator(this, numberOfRows, numberOfColumns, numberOfMines);
 		field = fieldCreator.generate();
 		for (int row = 0; row < numberOfRows; row++)
@@ -146,7 +146,7 @@ public class Minesweeper extends JFrame {
 	}
 
 
-	public void revealStartingPosition() {
+	private void revealStartingPosition() {
 		StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
 		Position startingPosition = startingPositionFinder.find();
 		Field startingField = getFieldByPosition(startingPosition);
@@ -154,7 +154,7 @@ public class Minesweeper extends JFrame {
 	}
 
 
-	public Field getFieldByPosition(Position position) {
+	private Field getFieldByPosition(Position position) {
 		return field[position.row][position.column];
 	}
 

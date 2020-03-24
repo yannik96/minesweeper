@@ -26,7 +26,7 @@ public class StartingPositionFinder {
 	}
 
 
-	public void findAllPossibleStartingPositions() {
+	private void findAllPossibleStartingPositions() {
 		for (int row = 0; row < numberOfRows; row++)
 			for (int column = 0; column < numberOfColumns; column++)
 				if (isEmptyField(field[row][column]))
@@ -34,7 +34,7 @@ public class StartingPositionFinder {
 	}
 
 
-	public boolean isEmptyField(Field field) {
+	private boolean isEmptyField(Field field) {
 		if (!(field instanceof Value))
 			return false;
 		Value valueField = (Value) field;
@@ -43,7 +43,7 @@ public class StartingPositionFinder {
 	}
 
 
-	public Position randomlySelectStartingPosition() {
+	private Position randomlySelectStartingPosition() {
 		Random generator = new Random();
 		int amountOfEmptyFields = emptyFields.size();
 		int indexOfStartingPosition = generator.nextInt(amountOfEmptyFields);
