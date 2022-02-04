@@ -3,7 +3,6 @@ package minesweeper;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -93,10 +92,6 @@ public abstract class Field extends JButton {
 
 	public Position getPosition() {
 		return position;
-	}
-	
-	public FieldRevealer getFieldRevealer() {
-		return fieldRevealer;
 	}
 	
 }

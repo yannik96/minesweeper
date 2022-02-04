@@ -192,9 +192,6 @@ public class Minesweeper extends JFrame {
 		this.dispose();
 	}
 
-	public Difficulty getDifficulty() {
-		return difficulty;
-	}
 
 	public boolean isRunning() {
 		return running;
