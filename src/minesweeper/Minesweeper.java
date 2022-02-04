@@ -2,8 +2,6 @@ package minesweeper;
 
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -108,23 +106,9 @@ public class Minesweeper extends JFrame {
 		menuNew.add(menuItemNewAdvanced);
 		menuNew.add(menuItemNewExpert);
 		
-		menuItemNewEasy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newGame(Difficulty.EASY);
-			}
-		});
-		
-		menuItemNewAdvanced.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newGame(Difficulty.ADVANCED);
-			}
-		});
-		
-		menuItemNewExpert.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newGame(Difficulty.EXPERT);
-			}
-		});
+		menuItemNewEasy.addActionListener(e -> newGame(Difficulty.EASY));
+		menuItemNewAdvanced.addActionListener(e -> newGame(Difficulty.ADVANCED));
+		menuItemNewExpert.addActionListener(e -> newGame(Difficulty.EXPERT));
 		
 		setJMenuBar(menuBar);
 	}
@@ -165,7 +149,7 @@ public class Minesweeper extends JFrame {
 		for (int i = 0; i < numberOfRows; i++) {
 			for (int e = 0; e < numberOfColumns; e++) {
 				// there exists a field that has not been clicked yet (right or left)
-				if (field[i][e].isEnabled() == true)
+				if (field[i][e].isEnabled())
 					won = false;
 				// there exists a field that is not a mine but has been flagged as such
 				if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag")

@@ -57,12 +57,9 @@ public class FieldCreator {
 	private boolean isPositionAMine(Position position) {
 		int row = position.row;
 		int column = position.column;
-		for (Position mine : mines) {
-			int mineRow = mine.row;
-			int mineColumn = mine.column;
-			if (row == mineRow && column == mineColumn)
+		for (Position mine : mines)
+			if (row == mine.row && column == mine.column)
 				return true;
-		}
 		return false;
 	}
 
@@ -71,12 +68,16 @@ public class FieldCreator {
 	private void setField() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
-				Position position = new Position(row, column);	
+				Field fieldValue;
+				Position position = new Position(row, column);
+
 				if (isPositionAMine(position)) {
-					field[row][column] = new Mine(minesweeper, fieldRevealer, position);
-					continue;
+					fieldValue = new Mine(minesweeper, fieldRevealer, position);
+				} else {
+					fieldValue =  new Value(minesweeper, fieldRevealer, position);
 				}
-				field[row][column] = new Value(minesweeper, fieldRevealer, position);	
+
+				field[row][column] = fieldValue;
 			}
 		}
 	}

@@ -13,7 +13,6 @@ public abstract class Field extends JButton {
 	
 	protected Minesweeper minesweeper;
 
-	private String imageFolder = "images/";
 	protected String imageFile;
 
 	protected boolean revealed = false;

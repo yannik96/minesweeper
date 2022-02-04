@@ -1,8 +1,5 @@
 package minesweeper;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 /** A class representing a value, i.e. fields that are not a mine. **/
 public class Value extends Field {
 	
@@ -11,13 +8,11 @@ public class Value extends Field {
 
 	public Value(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
 		super(minesweeper, fieldRevealer, position);
-		addActionListener(new ActionListener() {
-			  public void actionPerformed(ActionEvent e) {
-				  Field field = ((Field) e.getSource());
-				  fieldRevealer.reveal(field);
-				  minesweeper.checkVictory();
-			  }
-		 });
+		addActionListener(e -> {
+			Field field = ((Field) e.getSource());
+			fieldRevealer.reveal(field);
+			minesweeper.checkVictory();
+		});
 	}
 
 
