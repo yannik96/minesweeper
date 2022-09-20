@@ -15,6 +15,7 @@ public abstract class Field extends JButton {
 
 	protected String imageFile;
 
+
 	protected boolean revealed = false;
 	protected boolean tagged = false;
 	
@@ -27,39 +28,43 @@ public abstract class Field extends JButton {
 		this.fieldRevealer = fieldRevealer;
 		this.position = position;
 
-		// add listener for mouse clicks
+		this.initializeListener();
+	}
+
+	private void initializeListener() {
+		// add listener for mouse right clicks
 		addMouseListener(new MouseAdapter() {
-			 public void mouseClicked(MouseEvent event) {
-				 Field taggedField = (Field) event.getComponent();
-				 if (SwingUtilities.isRightMouseButton(event) && event.getClickCount() == 1) 
-					 onRightClick(taggedField);
-			 }   	 
+			@Override
+			public void mousePressed(MouseEvent event) {
+				if (SwingUtilities.isRightMouseButton(event)) {
+					onRightClick((Field) event.getComponent());
+				}
+			}
 		});
 	}
 
 
 	private void onRightClick(Field taggedField) {
-		if (!minesweeper.isRunning())
+		if (!minesweeper.isRunning()) {
 			return;
-		// field can be clicked or is tagged with a flag
-		if (taggedField.isEnabled() || taggedField.isTagged()) {
-			// if field is clickable, tag it with a flag
-			if (taggedField.isEnabled()) {
-				taggedField.setEnabled(false);
-				ImageIcon flagIcon = new ImageIcon(getClass().getClassLoader().getResource("flag.png"));
-				taggedField.setIcon(flagIcon);
-				taggedField.setDisabledIcon(flagIcon);
-				taggedField.setBackground(Color.WHITE);
-				minesweeper.checkVictory();
-			// undo tagging with a flag because currently flagged
-			} else {
-				taggedField.setIcon(new ImageIcon(""));
-				taggedField.setDisabledIcon(new ImageIcon(""));
-				taggedField.setEnabled(true);
-				taggedField.setBackground(Color.GRAY);
-			}
+		}
+
+		// if field is clickable, tag it with a flag; otherwise undo tagging with a flag because currently flagged
+		if (taggedField.isEnabled()) {
+			taggedField.setEnabled(false);
+			ImageIcon flagIcon = new ImageIcon(getClass().getClassLoader().getResource("flag.png"));
+			taggedField.setIcon(flagIcon);
+			taggedField.setDisabledIcon(flagIcon);
+			taggedField.setBackground(Color.WHITE);
+			minesweeper.checkVictory();
 			taggedField.changeTagged();
-		} 
+		} else if (taggedField.isTagged()){
+			taggedField.setIcon(new ImageIcon(""));
+			taggedField.setDisabledIcon(new ImageIcon(""));
+			taggedField.setEnabled(true);
+			taggedField.setBackground(Color.GRAY);
+			taggedField.changeTagged();
+		}
 	}
 
 

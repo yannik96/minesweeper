@@ -10,29 +10,23 @@ public class FieldRevealer {
 	private int numberOfRows;
 	private int numberOfColumns;
 
-
 	public FieldRevealer(Field[][] field) {
 		this.field = field;
 		this.numberOfRows = field.length;
 		this.numberOfColumns = field[0].length;
 	}
 
-
 	public void reveal(Field revealedField) {
 		revealedField.reveal();
+
 		// if field is not a mine (thus not lost), we might need to reveal surrounding fields
-		if (revealedField instanceof Value)
-			revealValue((Value) revealedField);
+		if (revealedField instanceof Value revealedValueField) {
+			// only reveal surrounding values if it does not have a value
+			if (revealedValueField.isEmpty()) {
+				revealSurroundingFields(revealedValueField);
+			}
+		}
 	}
-
-
-	private void revealValue(Value revealedField) {
-		int value = revealedField.getValue();
-		// only reveal surrounding values if does not have a value
-		if (value == 0)
-			revealSurroundingFields(revealedField);
-	}
-
 
 	private void revealSurroundingFields(Field revealedField) {
 		Position revealedPosition = revealedField.getPosition();
@@ -45,7 +39,6 @@ public class FieldRevealer {
 		}
 	}
 
-
 	private void revealField(Field field) {
 		if (field.isRevealed())
 			return;
@@ -53,7 +46,6 @@ public class FieldRevealer {
 			return;
 		reveal(field);
 	}
-
 
 	private boolean isPositionInBoundary(Position position) {
 		int row = position.row;
