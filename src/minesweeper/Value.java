@@ -5,11 +5,11 @@ public class Value extends Field {
 	
 	private int value = 0;
 
-	public Value(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
-		super(minesweeper, fieldRevealer, position);
+	public Value(final Minesweeper minesweeper,Position position) {
+		super(minesweeper, position);
 
 		addActionListener(e -> {
-			fieldRevealer.reveal(((Field) e.getSource()));
+			this.minesweeper.revealField(((Field) e.getSource()));
 			minesweeper.checkVictory();
 		});
 	}
@@ -22,7 +22,7 @@ public class Value extends Field {
 
 		revealed = true;
 		revealButton();
-		fieldRevealer.reveal(this);
+		this.minesweeper.revealField(this);
 	}
 
 	public void increaseValue() {

@@ -18,14 +18,11 @@ public abstract class Field extends JButton {
 
 	protected boolean revealed = false;
 	protected boolean tagged = false;
-	
-	protected FieldRevealer fieldRevealer;
 	protected Position position;
 
 
-	public Field(Minesweeper minesweeper, FieldRevealer fieldRevealer, Position position) {
+	public Field(Minesweeper minesweeper, Position position) {
 		this.minesweeper = minesweeper;
-		this.fieldRevealer = fieldRevealer;
 		this.position = position;
 
 		this.initializeListener();

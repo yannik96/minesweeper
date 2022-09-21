@@ -15,9 +15,8 @@ public class FieldCreator {
 	private int numberOfMines;
 	
 	private Field[][] field;
-	private Set<Position> mines = new HashSet<Position>();
+	private Set<Position> mines = new HashSet<>();
 	
-	private FieldRevealer fieldRevealer;
 
 
 	public FieldCreator(Minesweeper minesweeper, int rows, int columns, int mines) {
@@ -25,44 +24,44 @@ public class FieldCreator {
 		this.numberOfRows = rows;
 		this.numberOfColumns = columns;
 		this.numberOfMines = mines;
-		this.field = new Field[rows][columns];
-		this.fieldRevealer = new FieldRevealer(field);
 	}
 
-
 	public Field[][] generate() {
+		this.field = new Field[this.numberOfRows][this.numberOfColumns];
+
 		generateMines();
 		setField();
 		calculateFieldValues();
+
 		return field;
 	}
 
-
 	private void generateMines() {
-		while (mines.size() < numberOfMines)
+		while (mines.size() < numberOfMines) {
 			generateMine();
+		}
 	}
-
 
 	private void generateMine() {
 		Random generator = new Random();
-		int row = generator.nextInt(numberOfRows);
-		int column = generator.nextInt(numberOfColumns);
-		Position position = new Position(row, column);
-		if (!isPositionAMine(position)) 
-			mines.add(position);
-	}
+		Position position = new Position(generator.nextInt(numberOfRows), generator.nextInt(numberOfColumns));
 
+		if (!isPositionAMine(position)) {
+			mines.add(position);
+		}
+	}
 
 	private boolean isPositionAMine(Position position) {
 		int row = position.row;
 		int column = position.column;
-		for (Position mine : mines)
+
+		for (Position mine : mines) {
 			if (row == mine.row && column == mine.column)
 				return true;
+		}
+
 		return false;
 	}
-
 
 	/** Set field classes to be either mines or fields. **/
 	private void setField() {
@@ -72,16 +71,15 @@ public class FieldCreator {
 				Position position = new Position(row, column);
 
 				if (isPositionAMine(position)) {
-					fieldValue = new Mine(minesweeper, fieldRevealer, position);
+					fieldValue = new Mine(minesweeper, position);
 				} else {
-					fieldValue =  new Value(minesweeper, fieldRevealer, position);
+					fieldValue =  new Value(minesweeper, position);
 				}
 
 				field[row][column] = fieldValue;
 			}
 		}
 	}
-
 
 	private void calculateFieldValues() {
 		for (int row = 0; row < numberOfRows; row++) {
@@ -93,7 +91,6 @@ public class FieldCreator {
 		}
 	}
 
-
 	private void increaseValueInSurroundingFields(Position centerPosition) {
 		for (int row = centerPosition.row-1; row <= centerPosition.row+1; row++) {
 			for (int column = centerPosition.column-1; column <= centerPosition.column+1; column++) {
@@ -104,7 +101,6 @@ public class FieldCreator {
 		}
 	}
 
-
 	private boolean isPositionInBoundary(Position position) {
 		int row = position.row;
 		int column = position.column;
@@ -112,7 +108,6 @@ public class FieldCreator {
 		boolean isInColumnBoundary = column >= 0 && column < numberOfColumns;
 		return isInRowBoundary && isInColumnBoundary;
 	}
-
 
 	private void increaseValueOfField(Field field) {
 		if (!(field instanceof Value))

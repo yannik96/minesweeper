@@ -39,6 +39,8 @@ public class Minesweeper extends JFrame {
 	public static int WIDTH;
 	public static int HEIGHT;
 
+	private FieldRevealer fieldRevealer;
+
 	private boolean running;
 
 
@@ -123,10 +125,13 @@ public class Minesweeper extends JFrame {
 
 	private void createField() {
 		FieldCreator fieldCreator = new FieldCreator(this, numberOfRows, numberOfColumns, numberOfMines);
+
 		field = fieldCreator.generate();
 		for (int row = 0; row < numberOfRows; row++)
 			for (int column = 0; column < numberOfColumns; column++)
 				add(field[row][column]);
+
+		this.fieldRevealer = new FieldRevealer(field);
 	}
 
 
@@ -174,6 +179,14 @@ public class Minesweeper extends JFrame {
 	public void newGame(Difficulty difficulty) {
 		new Minesweeper(difficulty);
 		this.dispose();
+	}
+
+	public void revealField(Field field) {
+		this.fieldRevealer.reveal(field);
+	}
+
+	public void revealEntireField() {
+		this.fieldRevealer.revealEntireField();
 	}
 
 

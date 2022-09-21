@@ -3,27 +3,27 @@ package minesweeper;
 /** A class representing a mine. **/
 public class Mine extends Field {
 
-	public Mine(final Minesweeper minesweeper, final FieldRevealer fieldRevealer, Position position) {
-		super(minesweeper, fieldRevealer, position);
-		imageFile = "mine.png";
+	public Mine(final Minesweeper minesweeper, Position position) {
+		super(minesweeper, position);
 
+		this.imageFile = "mine.png";
 		addActionListener(e -> onLeftClick(((Field) e.getSource())));
 	}
 
 	public void onLeftClick(Field clickedField) {
-		fieldRevealer.reveal(clickedField);
-		minesweeper.setLost();
+		this.minesweeper.revealField(clickedField);
+		this.minesweeper.setLost();
 	}
 
 	@Override
 	public void reveal() {
-		if (!minesweeper.isRunning() || revealed) {
+		if (!this.minesweeper.isRunning() || this.revealed) {
 			return;
 		}
 
-		revealed = true;
-		revealButton();
-		fieldRevealer.revealEntireField();;
+		this.revealed = true;
+		this.revealButton();
+		this.minesweeper.revealEntireField();;
 	}	
 
 }
