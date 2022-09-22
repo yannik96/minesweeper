@@ -5,11 +5,7 @@ Once all mines have been marked as one and the remaining fields have been reveal
 Left-clicking on a mine ends the game.
 
 ## Playing
-To play the game, simply start the `minesweeper.jar`.
 
 ![img.png](images/expert_start.png)
 
 ![img.png](images/easy.png)
-
-## Development Setup
-To run the game using an IDE such as [IntelliJ](https://www.jetbrains.com/idea/), define the `resources` folder as a resource and run the main method.
