@@ -70,6 +70,8 @@ public abstract class Field extends JButton {
 	/** Different semantics depending on type of field, e.g. Mine or Field. **/
 	public abstract void reveal();
 
+	public abstract boolean isEmpty();
+
 	/** Called if the field is being revealed. Display value. **/
 	protected void revealButton() {
 		setEnabled(false);

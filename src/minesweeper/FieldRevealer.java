@@ -2,8 +2,6 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-import javax.swing.ImageIcon;
-
 /** Class performing the revelation of a field and potentially surrounding fields. **/
 public class FieldRevealer {
 	

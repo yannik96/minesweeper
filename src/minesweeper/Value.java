@@ -51,6 +51,7 @@ public class Value extends Field {
 		imageFile = value + ".png";
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return value == 0;
 	}

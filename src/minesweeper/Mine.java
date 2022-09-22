@@ -33,4 +33,9 @@ public class Mine extends Field {
 		// do nothing
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return false;
+	}
+
 }

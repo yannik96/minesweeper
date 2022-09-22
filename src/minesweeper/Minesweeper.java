@@ -116,25 +116,24 @@ public class Minesweeper extends JFrame {
 		setJMenuBar(menuBar);
 	}
 
-
 	private void initializeField() {
 		createField();
 		running = true;
 		revealStartingPosition();
 	}
 
-
 	private void createField() {
 		FieldCreator fieldCreator = new FieldCreator(this, numberOfRows, numberOfColumns, numberOfMines);
 
 		field = fieldCreator.generate();
-		for (int row = 0; row < numberOfRows; row++)
-			for (int column = 0; column < numberOfColumns; column++)
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int column = 0; column < numberOfColumns; column++) {
 				add(field[row][column]);
+			}
+		}
 
 		this.fieldRevealer = new FieldRevealer(field);
 	}
-
 
 	private void revealStartingPosition() {
 		StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
@@ -143,39 +142,46 @@ public class Minesweeper extends JFrame {
 		startingField.reveal();
 	}
 
-
 	private Field getFieldByPosition(IntIntImmutablePair position) {
 		return field[position.leftInt()][position.rightInt()];
 	}
 
-
-	/** Checks whether the game is won. **/
 	public void checkVictory() {
-		boolean won = true;
-		for (int i = 0; i < numberOfRows; i++) {
-			for (int e = 0; e < numberOfColumns; e++) {
-				// there exists a field that has not been clicked yet (right or left)
-				if (field[i][e].isEnabled())
-					won = false;
-				// there exists a field that is not a mine but has been flagged as such
-				if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag")
-					won = false;
-			}
-		}
-		// announce win and stop game
-		if (won) {
-			running = false;
-			JOptionPane.showMessageDialog(null, "Congratulations, you have won!", "Information", JOptionPane.INFORMATION_MESSAGE);
+		if (this.isGameWon()) {
+			setWon();
 		}
 	}
 
+	/** Checks whether the game is won. **/
+	public boolean isGameWon() {
+		for (int i = 0; i < numberOfRows; i++) {
+			for (int e = 0; e < numberOfColumns; e++) {
+				// there exists a field that has not been clicked yet (right or left)
+				if (field[i][e].isEnabled()) {
+					return false;
+				}
+
+				// there exists a field that is not a mine but has been flagged as such
+				if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag") {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/** Announce win and stop game **/
+	public void setWon() {
+		running = false;
+		JOptionPane.showMessageDialog(null, "Congratulations, you have won!", "Information", JOptionPane.INFORMATION_MESSAGE);
+	}
 
 	/** Stops the game if it is lost. **/
 	public void setLost() {
 		JOptionPane.showMessageDialog(null, "You have lost.", "Information", JOptionPane.INFORMATION_MESSAGE);
 		running = false;
 	}
-
 
 	public void newGame(Difficulty difficulty) {
 		new Minesweeper(difficulty);
@@ -189,7 +195,6 @@ public class Minesweeper extends JFrame {
 	public void revealEntireField() {
 		this.fieldRevealer.revealEntireField();
 	}
-
 
 	public boolean isRunning() {
 		return running;
