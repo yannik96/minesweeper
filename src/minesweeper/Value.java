@@ -55,9 +55,5 @@ public class Value extends Field {
 	public boolean isEmpty() {
 		return value == 0;
 	}
-	
-	public int getValue() {
-		return value;
-	}
 
 }

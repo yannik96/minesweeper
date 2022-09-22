@@ -27,6 +27,7 @@ public class FieldRevealer {
 	}
 
 	private void revealSurroundingFields(Field revealedField) {
+		BoundaryChecker boundaryChecker = new BoundaryChecker(numberOfRows, numberOfColumns);
 		IntIntImmutablePair revealedPosition = revealedField.getPosition();
 
 		int revealedRow = revealedPosition.leftInt();
@@ -34,7 +35,7 @@ public class FieldRevealer {
 
 		for (int row = revealedRow-1; row <= revealedRow+1; row++) {
 			for (int column = revealedColumn-1; column <= revealedColumn+1; column++) {
-				if (Utils.isPositionInBoundary(new IntIntImmutablePair(row, column), numberOfRows, numberOfColumns)) {
+				if (boundaryChecker.isInBounds(new IntIntImmutablePair(row, column))) {
 					revealField(field[row][column]);
 				}
 			}	

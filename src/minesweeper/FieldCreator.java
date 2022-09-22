@@ -83,12 +83,14 @@ public class FieldCreator {
 	}
 
 	private void increaseValueInSurroundingFields(IntIntImmutablePair centerPosition) {
+		BoundaryChecker boundaryChecker = new BoundaryChecker(numberOfRows, numberOfColumns);
+
 		int centerRow = centerPosition.leftInt();
 		int centerColumn = centerPosition.rightInt();
 
 		for (int row = centerRow - 1; row <= centerRow + 1; row++) {
 			for (int column = centerColumn - 1; column <= centerColumn + 1; column++) {
-				if (Utils.isPositionInBoundary(new IntIntImmutablePair(row, column), numberOfRows, numberOfColumns)) {
+				if (boundaryChecker.isInBounds(new IntIntImmutablePair(row, column))) {
 					this.field[row][column].increaseValue();
 				}
 			}
