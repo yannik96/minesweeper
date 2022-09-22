@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import minesweeper.enums.Difficulty;
 
 /** A class defining the application interface and basic game logic. **/
@@ -137,14 +138,14 @@ public class Minesweeper extends JFrame {
 
 	private void revealStartingPosition() {
 		StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
-		Position startingPosition = startingPositionFinder.find();
+		IntIntImmutablePair startingPosition = startingPositionFinder.find();
 		Field startingField = getFieldByPosition(startingPosition);
 		startingField.reveal();
 	}
 
 
-	private Field getFieldByPosition(Position position) {
-		return field[position.row][position.column];
+	private Field getFieldByPosition(IntIntImmutablePair position) {
+		return field[position.leftInt()][position.rightInt()];
 	}
 
 

@@ -1,5 +1,7 @@
 package minesweeper;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+
 import javax.swing.ImageIcon;
 
 /** Class performing the revelation of a field and potentially surrounding fields. **/
@@ -27,11 +29,14 @@ public class FieldRevealer {
 	}
 
 	private void revealSurroundingFields(Field revealedField) {
-		Position revealedPosition = revealedField.getPosition();
-		for (int row = revealedPosition.row-1; row <= revealedPosition.row+1; row++) {
-			for (int column = revealedPosition.column-1; column <= revealedPosition.column+1; column++) {
-				Position position = new Position(row, column);
-				if (isPositionInBoundary(position)) {
+		IntIntImmutablePair revealedPosition = revealedField.getPosition();
+
+		int revealedRow = revealedPosition.leftInt();
+		int revealedColumn = revealedPosition.rightInt();
+
+		for (int row = revealedRow-1; row <= revealedRow+1; row++) {
+			for (int column = revealedColumn-1; column <= revealedColumn+1; column++) {
+				if (Utils.isPositionInBoundary(new IntIntImmutablePair(row, column), numberOfRows, numberOfColumns)) {
 					revealField(field[row][column]);
 				}
 			}	
@@ -48,40 +53,13 @@ public class FieldRevealer {
 		return !field.isRevealed() && !field.isTagged();
 	}
 
-	private boolean isPositionInBoundary(Position position) {
-		int row = position.row;
-		int column = position.column;
-
-		boolean isInRowBoundary = row >= 0 && row < numberOfRows;
-		boolean isInColumnBoundary = column >= 0 && column < numberOfColumns;
-
-		return isInRowBoundary && isInColumnBoundary;
-	}	
-
 	/** Reveals entire field if player has lost. **/
 	public void revealEntireField() {
 		for (int row = 0; row < numberOfRows; row++) {
 			for (int column = 0; column < numberOfColumns; column++) {
-				Field currentField = field[row][column];
-
-				currentField.reveal();
-
-				if (currentField.isTagged() && !isMine(currentField)) {
-					setIncorrectlyTagged(currentField);
-				}
+				field[row][column].reveal();
 			}
 		}
-	}
-
-	private boolean isMine(Field field) {
-		return (field instanceof Mine);
-	}
-
-	private void setIncorrectlyTagged(Field field) {
-		// TODO: central resource manager
-		ImageIcon noMineIcon = new ImageIcon(getClass().getClassLoader().getResource("nomine.png"));
-		field.setIcon(noMineIcon);
-		field.setDisabledIcon(noMineIcon);
 	}
 
 }

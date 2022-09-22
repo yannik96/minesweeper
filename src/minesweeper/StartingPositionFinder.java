@@ -1,5 +1,7 @@
 package minesweeper;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,8 +11,10 @@ public class StartingPositionFinder {
 	private Field[][] field;
 	private int numberOfRows;
 	private int numberOfColumns;
+
+	private Random generator = new Random();
 	
-	private ArrayList<Position> emptyFields = new ArrayList<Position>();
+	private ArrayList<IntIntImmutablePair> emptyFields = new ArrayList<>();
 
 
 	public StartingPositionFinder(Field[][] field) {
@@ -20,17 +24,20 @@ public class StartingPositionFinder {
 	}
 
 
-	public Position find() {
+	public IntIntImmutablePair find() {
 		findAllPossibleStartingPositions();
 		return randomlySelectStartingPosition();
 	}
 
 
 	private void findAllPossibleStartingPositions() {
-		for (int row = 0; row < numberOfRows; row++)
-			for (int column = 0; column < numberOfColumns; column++)
-				if (isEmptyField(field[row][column]))
-					emptyFields.add(new Position(row, column)); 
+		for (int row = 0; row < numberOfRows; row++) {
+			for (int column = 0; column < numberOfColumns; column++) {
+				if (isEmptyField(field[row][column])) {
+					emptyFields.add(new IntIntImmutablePair(row, column));
+				}
+			}
+		}
 	}
 
 
@@ -43,10 +50,8 @@ public class StartingPositionFinder {
 	}
 
 
-	private Position randomlySelectStartingPosition() {
-		Random generator = new Random();
-		int amountOfEmptyFields = emptyFields.size();
-		int indexOfStartingPosition = generator.nextInt(amountOfEmptyFields);
+	private IntIntImmutablePair randomlySelectStartingPosition() {
+		int indexOfStartingPosition = generator.nextInt(emptyFields.size());
 		return emptyFields.get(indexOfStartingPosition);
 	}
 

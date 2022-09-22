@@ -1,5 +1,7 @@
 package minesweeper;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,10 +20,9 @@ public abstract class Field extends JButton {
 
 	protected boolean revealed = false;
 	protected boolean tagged = false;
-	protected Position position;
+	protected IntIntImmutablePair position;
 
-
-	public Field(Minesweeper minesweeper, Position position) {
+	public Field(Minesweeper minesweeper, IntIntImmutablePair position) {
 		this.minesweeper = minesweeper;
 		this.position = position;
 
@@ -39,7 +40,6 @@ public abstract class Field extends JButton {
 			}
 		});
 	}
-
 
 	private void onRightClick(Field taggedField) {
 		if (!minesweeper.isRunning()) {
@@ -64,10 +64,11 @@ public abstract class Field extends JButton {
 		}
 	}
 
+	/** Increases the value of the field if applicable. **/
+	public abstract void increaseValue();
 
 	/** Different semantics depending on type of field, e.g. Mine or Field. **/
 	public abstract void reveal();
-
 
 	/** Called if the field is being revealed. Display value. **/
 	protected void revealButton() {
@@ -77,7 +78,6 @@ public abstract class Field extends JButton {
 		setDisabledIcon(valueIcon);
 		setBackground(Color.WHITE);
 	}
-
 
 	public void changeTagged() {
 		tagged = !tagged;
@@ -91,7 +91,7 @@ public abstract class Field extends JButton {
 		return revealed;
 	}
 
-	public Position getPosition() {
+	public IntIntImmutablePair getPosition() {
 		return position;
 	}
 	
