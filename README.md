@@ -6,6 +6,7 @@ Once all mines have been marked as such and the remaining fields have been revea
 Left-clicking on a mine ends the game.
 
 To play, download the latest jar (e.g. `minesweeper-v1.0.jar`) from the packages on the right and execute it.
+Make sure to have Java 17 or higher installed.
 
 ![img.png](assets/expert_start.png)
 
