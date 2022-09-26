@@ -2,63 +2,67 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-/** Class performing the revelation of a field and potentially surrounding fields. **/
+/**
+ * Class performing the revelation of a field and potentially surrounding fields.
+ **/
 public class FieldRevealer {
-	
-	private Field[][] field;
-	
-	private int numberOfRows;
-	private int numberOfColumns;
 
-	public FieldRevealer(Field[][] field) {
-		this.field = field;
-		this.numberOfRows = field.length;
-		this.numberOfColumns = field[0].length;
-	}
+    private Field[][] field;
 
-	public void reveal(Field revealedField) {
-		revealedField.reveal();
+    private int numberOfRows;
+    private int numberOfColumns;
 
-		// if field is not a mine (thus not lost), we might need to reveal surrounding fields
-		// only reveal surrounding values if it does not have a value
-		if (revealedField instanceof Value revealedValueField && revealedValueField.isEmpty()) {
-			revealSurroundingFields(revealedValueField);
-		}
-	}
+    public FieldRevealer(Field[][] field) {
+        this.field = field;
+        this.numberOfRows = field.length;
+        this.numberOfColumns = field[0].length;
+    }
 
-	private void revealSurroundingFields(Field revealedField) {
-		BoundaryChecker boundaryChecker = new BoundaryChecker(numberOfRows, numberOfColumns);
-		IntIntImmutablePair revealedPosition = revealedField.getPosition();
+    public void reveal(Field revealedField) {
+        revealedField.reveal();
 
-		int revealedRow = revealedPosition.leftInt();
-		int revealedColumn = revealedPosition.rightInt();
+        // if field is not a mine (thus not lost), we might need to reveal surrounding fields
+        // only reveal surrounding values if it does not have a value
+        if (revealedField instanceof Value revealedValueField && revealedValueField.isEmpty()) {
+            revealSurroundingFields(revealedValueField);
+        }
+    }
 
-		for (int row = revealedRow-1; row <= revealedRow+1; row++) {
-			for (int column = revealedColumn-1; column <= revealedColumn+1; column++) {
-				if (boundaryChecker.isInBounds(new IntIntImmutablePair(row, column))) {
-					revealField(field[row][column]);
-				}
-			}	
-		}
-	}
+    private void revealSurroundingFields(Field revealedField) {
+        BoundaryChecker boundaryChecker = new BoundaryChecker(numberOfRows, numberOfColumns);
+        IntIntImmutablePair revealedPosition = revealedField.getPosition();
 
-	private void revealField(Field field) {
-		if (canRevealField(field)) {
-			reveal(field);
-		}
-	}
+        int revealedRow = revealedPosition.leftInt();
+        int revealedColumn = revealedPosition.rightInt();
 
-	private boolean canRevealField(Field field) {
-		return !field.isRevealed() && !field.isTagged();
-	}
+        for (int row = revealedRow - 1; row <= revealedRow + 1; row++) {
+            for (int column = revealedColumn - 1; column <= revealedColumn + 1; column++) {
+                if (boundaryChecker.isInBounds(new IntIntImmutablePair(row, column))) {
+                    revealField(field[row][column]);
+                }
+            }
+        }
+    }
 
-	/** Reveals entire field if player has lost. **/
-	public void revealEntireField() {
-		for (int row = 0; row < numberOfRows; row++) {
-			for (int column = 0; column < numberOfColumns; column++) {
-				field[row][column].reveal();
-			}
-		}
-	}
+    private void revealField(Field field) {
+        if (canRevealField(field)) {
+            reveal(field);
+        }
+    }
+
+    private boolean canRevealField(Field field) {
+        return !field.isRevealed() && !field.isTagged();
+    }
+
+    /**
+     * Reveals entire field if player has lost.
+     **/
+    public void revealEntireField() {
+        for (int row = 0; row < numberOfRows; row++) {
+            for (int column = 0; column < numberOfColumns; column++) {
+                field[row][column].reveal();
+            }
+        }
+    }
 
 }

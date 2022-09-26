@@ -7,8 +7,8 @@ import minesweeper.enums.Difficulty;
  */
 public class Main {
 
-	public static void main(String[] args) {
-		new Minesweeper(Difficulty.EASY);
-	}
+    public static void main(String[] args) {
+        new Minesweeper(Difficulty.EASY);
+    }
 
 }
