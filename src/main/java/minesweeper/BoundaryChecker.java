@@ -8,6 +8,10 @@ public class BoundaryChecker {
     private final int numberOfColumns;
 
     public BoundaryChecker(int numberOfRows, int numberOfColumns) {
+        if (numberOfRows < 0 || numberOfColumns < 0) {
+            throw new IllegalArgumentException("Number of rows and columns must be positive.");
+        }
+
         this.numberOfRows = numberOfRows;
         this.numberOfColumns = numberOfColumns;
     }
