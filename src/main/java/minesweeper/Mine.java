@@ -7,28 +7,22 @@ import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
  **/
 public class Mine extends Field {
 
-    public Mine(final Minesweeper minesweeper, IntIntImmutablePair position) {
-        super(minesweeper, position);
+    public Mine(FieldExposer fieldExposer, IntIntImmutablePair position) {
+        super(fieldExposer, position);
 
         this.imageFile = "mine.png";
-        addActionListener(e -> onLeftClick(((Field) e.getSource())));
-    }
-
-    public void onLeftClick(Field clickedField) {
-        this.minesweeper.revealField(clickedField);
-        this.minesweeper.setLost();
+        addActionListener(e -> fieldExposer.revealMine(this));
     }
 
     @Override
     public void reveal() {
-        if (!this.minesweeper.isRunning() || this.revealed) {
+        if (!this.isRunning || this.revealed) {
             return;
         }
 
         this.revealed = true;
         this.revealButton();
-        this.minesweeper.revealEntireField();
-        ;
+        this.fieldExposer.revealEntireField();
     }
 
     @Override

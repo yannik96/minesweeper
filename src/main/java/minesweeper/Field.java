@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
  **/
 public abstract class Field extends JButton {
 
-    protected Minesweeper minesweeper;
+    protected FieldExposer fieldExposer;
 
     protected String imageFile;
 
@@ -21,8 +21,10 @@ public abstract class Field extends JButton {
     protected boolean tagged = false;
     protected IntIntImmutablePair position;
 
-    public Field(Minesweeper minesweeper, IntIntImmutablePair position) {
-        this.minesweeper = minesweeper;
+    protected boolean isRunning = false;
+
+    public Field(FieldExposer fieldExposer, IntIntImmutablePair position) {
+        this.fieldExposer = fieldExposer;
         this.position = position;
 
         this.initializeListener();
@@ -41,7 +43,7 @@ public abstract class Field extends JButton {
     }
 
     private void onRightClick(Field taggedField) {
-        if (!minesweeper.isRunning()) {
+        if (!this.isRunning) {
             return;
         }
 
@@ -52,7 +54,7 @@ public abstract class Field extends JButton {
             taggedField.setIcon(flagIcon);
             taggedField.setDisabledIcon(flagIcon);
             taggedField.setBackground(Color.WHITE);
-            minesweeper.checkVictory();
+            this.fieldExposer.tagField(taggedField);
             taggedField.changeTagged();
         } else if (taggedField.isTagged()) {
             taggedField.setIcon(new ImageIcon(""));
@@ -100,6 +102,10 @@ public abstract class Field extends JButton {
 
     public IntIntImmutablePair getPosition() {
         return position;
+    }
+
+    public void setRunning(boolean running) {
+        this.isRunning = running;
     }
 
 }

@@ -42,7 +42,7 @@ public class Minesweeper extends JFrame {
     public static int WIDTH;
     public static int HEIGHT;
 
-    private FieldRevealer fieldRevealer;
+    private FieldExposerImpl fieldRevealer;
 
     private boolean running;
 
@@ -120,12 +120,15 @@ public class Minesweeper extends JFrame {
 
     private void initializeField() {
         createField();
-        running = true;
+        this.setFieldsRunning(true);
+        this.running = true;
         revealStartingPosition();
     }
 
     private void createField() {
-        FieldCreator fieldCreator = new FieldCreator(this, numberOfRows, numberOfColumns, numberOfMines);
+        // TODO:
+        this.fieldRevealer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(numberOfRows, numberOfColumns), field);
+        FieldCreator fieldCreator = new FieldCreator(this.fieldRevealer, numberOfRows, numberOfColumns, numberOfMines);
 
         field = fieldCreator.generate();
         for (int row = 0; row < numberOfRows; row++) {
@@ -134,7 +137,7 @@ public class Minesweeper extends JFrame {
             }
         }
 
-        this.fieldRevealer = new FieldRevealer(field);
+        this.fieldRevealer.setField(field);
     }
 
     private void revealStartingPosition() {
@@ -148,38 +151,11 @@ public class Minesweeper extends JFrame {
         return field[position.leftInt()][position.rightInt()];
     }
 
-    public void checkVictory() {
-        if (this.isGameWon()) {
-            setWon();
-        }
-    }
-
-    /**
-     * Checks whether the game is won.
-     **/
-    public boolean isGameWon() {
-        for (int i = 0; i < numberOfRows; i++) {
-            for (int e = 0; e < numberOfColumns; e++) {
-                // there exists a field that has not been clicked yet (right or left)
-                if (field[i][e].isEnabled()) {
-                    return false;
-                }
-
-                // there exists a field that is not a mine but has been flagged as such
-                if (!(field[i][e] instanceof Mine) && field[i][e].getToolTipText() == "flag") {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
     /**
      * Announce win and stop game
      **/
     public void setWon() {
-        running = false;
+        this.stopGame();
         JOptionPane.showMessageDialog(null, "Congratulations, you have won!", "Information", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -187,8 +163,13 @@ public class Minesweeper extends JFrame {
      * Stops the game if it is lost.
      **/
     public void setLost() {
+        this.stopGame();
         JOptionPane.showMessageDialog(null, "You have lost.", "Information", JOptionPane.INFORMATION_MESSAGE);
-        running = false;
+    }
+
+    private void stopGame() {
+        this.running = false;
+        this.setFieldsRunning(false);
     }
 
     public void newGame(Difficulty difficulty) {
@@ -196,16 +177,16 @@ public class Minesweeper extends JFrame {
         this.dispose();
     }
 
-    public void revealField(Field field) {
-        this.fieldRevealer.reveal(field);
+    private void setFieldsRunning(boolean running) {
+        for (Field[] fields : field) {
+            for (Field field : fields) {
+                field.setRunning(running);
+            }
+        }
     }
 
-    public void revealEntireField() {
-        this.fieldRevealer.revealEntireField();
-    }
-
-    public boolean isRunning() {
-        return running;
+    public Field[][] getField() {
+        return field;
     }
 
 }

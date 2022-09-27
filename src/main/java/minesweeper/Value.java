@@ -11,18 +11,15 @@ public class Value extends Field {
 
     private int value = 0;
 
-    public Value(final Minesweeper minesweeper, IntIntImmutablePair position) {
-        super(minesweeper, position);
+    public Value(FieldExposer fieldExposer, IntIntImmutablePair position) {
+        super(fieldExposer, position);
 
-        addActionListener(e -> {
-            this.minesweeper.revealField(((Field) e.getSource()));
-            minesweeper.checkVictory();
-        });
+        addActionListener(e -> fieldExposer.revealValue(this));
     }
 
     @Override
     public void reveal() {
-        if (revealed || !minesweeper.isRunning()) {
+        if (revealed || !this.isRunning) {
             return;
         }
 
@@ -34,7 +31,7 @@ public class Value extends Field {
             revealButton();
         }
 
-        this.minesweeper.revealField(this);
+        this.fieldExposer.revealValue(this);
     }
 
     private void setIncorrectlyTagged() {

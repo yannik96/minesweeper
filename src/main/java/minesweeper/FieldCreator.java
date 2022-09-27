@@ -11,7 +11,7 @@ import java.util.Set;
  **/
 public class FieldCreator {
 
-    private Minesweeper minesweeper;
+    private FieldExposer fieldExposer;
 
     private int numberOfRows;
     private int numberOfColumns;
@@ -23,8 +23,8 @@ public class FieldCreator {
 
     private Random generator = new Random();
 
-    public FieldCreator(Minesweeper minesweeper, int rows, int columns, int mines) {
-        this.minesweeper = minesweeper;
+    public FieldCreator(FieldExposer fieldExposer, int rows, int columns, int mines) {
+        this.fieldExposer = fieldExposer;
         this.numberOfRows = rows;
         this.numberOfColumns = columns;
         this.numberOfMines = mines;
@@ -66,9 +66,9 @@ public class FieldCreator {
                 IntIntImmutablePair position = new IntIntImmutablePair(row, column);
 
                 if (isPositionAMine(position)) {
-                    field[row][column] = new Mine(minesweeper, position);
+                    field[row][column] = new Mine(fieldExposer, position);
                 } else {
-                    field[row][column] = new Value(minesweeper, position);
+                    field[row][column] = new Value(fieldExposer, position);
                 }
             }
         }
