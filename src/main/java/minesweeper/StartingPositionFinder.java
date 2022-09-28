@@ -3,6 +3,7 @@ package minesweeper;
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -11,8 +12,6 @@ import java.util.Random;
 public class StartingPositionFinder {
 
     private Field[][] field;
-    private int numberOfRows;
-    private int numberOfColumns;
 
     private Random generator = new Random();
 
@@ -20,8 +19,11 @@ public class StartingPositionFinder {
 
     public StartingPositionFinder(Field[][] field) {
         this.field = field;
-        this.numberOfRows = field.length;
-        this.numberOfColumns = field[0].length;
+    }
+
+    public void revealStartingPosition() {
+        IntIntImmutablePair startingPosition = this.find();
+        field[startingPosition.leftInt()][startingPosition.rightInt()].reveal();
     }
 
     public IntIntImmutablePair find() {
@@ -30,13 +32,11 @@ public class StartingPositionFinder {
     }
 
     private void findAllPossibleStartingPositions() {
-        for (int row = 0; row < numberOfRows; row++) {
-            for (int column = 0; column < numberOfColumns; column++) {
-                if (field[row][column].isEmpty()) {
-                    emptyFields.add(new IntIntImmutablePair(row, column));
-                }
+        Arrays.stream(field).forEach(row -> Arrays.stream(row).forEach(field -> {
+            if (field.isEmpty()) {
+                emptyFields.add(field.getPosition());
             }
-        }
+        }));
     }
 
     private IntIntImmutablePair randomlySelectStartingPosition() {

@@ -1,10 +1,10 @@
 package minesweeper;
 
-import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import minesweeper.enums.Difficulty;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 
 /**
@@ -28,9 +28,6 @@ public class Minesweeper extends JFrame {
     public static final int EXPERT_MINES = 99;
 
 
-    /**
-     * Chosen difficulty settings.
-     **/
     private Difficulty difficulty;
 
     private int numberOfRows;
@@ -42,7 +39,7 @@ public class Minesweeper extends JFrame {
     public static int WIDTH;
     public static int HEIGHT;
 
-    private FieldExposerImpl fieldRevealer;
+    private FieldExposerImpl fieldExposer;
 
     private boolean running;
 
@@ -120,39 +117,27 @@ public class Minesweeper extends JFrame {
 
     private void initializeField() {
         createField();
+
         this.setFieldsRunning(true);
         this.running = true;
-        revealStartingPosition();
+
+        StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
+        startingPositionFinder.revealStartingPosition();
     }
 
     private void createField() {
         // TODO:
-        this.fieldRevealer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(numberOfRows, numberOfColumns), field);
-        FieldCreator fieldCreator = new FieldCreator(this.fieldRevealer, numberOfRows, numberOfColumns, numberOfMines);
+        this.fieldExposer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(numberOfRows, numberOfColumns), field);
+        FieldCreator fieldCreator = new FieldCreator(this.fieldExposer, numberOfRows, numberOfColumns, numberOfMines);
 
         field = fieldCreator.generate();
-        for (int row = 0; row < numberOfRows; row++) {
-            for (int column = 0; column < numberOfColumns; column++) {
-                add(field[row][column]);
-            }
-        }
+        Arrays.stream(field).forEach(fields -> Arrays.stream(fields).forEach(field -> add(field)));
 
-        this.fieldRevealer.setField(field);
-    }
-
-    private void revealStartingPosition() {
-        StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
-        IntIntImmutablePair startingPosition = startingPositionFinder.find();
-        Field startingField = getFieldByPosition(startingPosition);
-        startingField.reveal();
-    }
-
-    private Field getFieldByPosition(IntIntImmutablePair position) {
-        return field[position.leftInt()][position.rightInt()];
+        this.fieldExposer.setField(field);
     }
 
     /**
-     * Announce win and stop game
+     * Announces win and stops game.
      **/
     public void setWon() {
         this.stopGame();
@@ -160,7 +145,7 @@ public class Minesweeper extends JFrame {
     }
 
     /**
-     * Stops the game if it is lost.
+     * Announces loss and stops game.
      **/
     public void setLost() {
         this.stopGame();
@@ -178,15 +163,15 @@ public class Minesweeper extends JFrame {
     }
 
     private void setFieldsRunning(boolean running) {
-        for (Field[] fields : field) {
-            for (Field field : fields) {
-                field.setRunning(running);
-            }
-        }
+        Arrays.stream(field).forEach(fields -> Arrays.stream(fields).forEach(field -> field.setRunning(running)));
     }
 
     public Field[][] getField() {
         return field;
+    }
+
+    public boolean isRunning() {
+        return running;
     }
 
 }
