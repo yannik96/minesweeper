@@ -10,7 +10,7 @@ public class VictoryCheckerImpl implements VictoryChecker {
 
     @Override
     public void checkVictory() {
-        if (this.isGameWon()) {
+        if (this.isGameWon() && this.minesweeper.isRunning()) {
             this.minesweeper.setWon();
         }
     }

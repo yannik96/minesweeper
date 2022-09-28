@@ -66,15 +66,18 @@ public abstract class Field extends JButton {
     }
 
     /**
-     * Increases the value of the field if applicable.
+     * Increases the value of the field.
      **/
     public abstract void increaseValue();
 
     /**
-     * Different semantics depending on type of field, e.g. Mine or Field.
+     * Reveals the field.
      **/
     public abstract void reveal();
 
+    /**
+     * Returns if the field is empty.
+     */
     public abstract boolean isEmpty();
 
     /**
