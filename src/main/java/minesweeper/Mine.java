@@ -9,20 +9,14 @@ public class Mine extends Field {
 
     public Mine(FieldExposer fieldExposer, IntIntImmutablePair position) {
         super(fieldExposer, position);
-
-        this.imageFile = "mine.png";
-        addActionListener(e -> fieldExposer.revealMine(this));
     }
 
     @Override
     public void reveal() {
-        if (!this.isRunning || this.revealed) {
-            return;
+        if (this.canBeRevealed()) {
+            this.revealed = true;
+            this.fieldExposer.revealEntireField();
         }
-
-        this.revealed = true;
-        this.revealButton();
-        this.fieldExposer.revealEntireField();
     }
 
     @Override

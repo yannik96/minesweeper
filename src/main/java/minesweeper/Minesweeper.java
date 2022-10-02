@@ -1,6 +1,11 @@
 package minesweeper;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import minesweeper.enums.Difficulty;
+import minesweeper.ui.FieldButton;
+import minesweeper.ui.ImageManager;
+import minesweeper.ui.MineButton;
+import minesweeper.ui.ValueButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +40,7 @@ public class Minesweeper extends JFrame {
     private int numberOfMines;
 
     private Field[][] field;
+    private FieldRevealer[][] fieldRevealers;
 
     public static int WIDTH;
     public static int HEIGHT;
@@ -122,18 +128,30 @@ public class Minesweeper extends JFrame {
         this.running = true;
 
         StartingPositionFinder startingPositionFinder = new StartingPositionFinder(field);
-        startingPositionFinder.revealStartingPosition();
+        IntIntImmutablePair startingPosition = startingPositionFinder.find();
+        fieldRevealers[startingPosition.leftInt()][startingPosition.rightInt()].reveal();
     }
 
     private void createField() {
+        ImageManager imageManager = new ImageManager();
         // TODO:
         this.fieldExposer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(numberOfRows, numberOfColumns), field);
         FieldCreator fieldCreator = new FieldCreator(this.fieldExposer, numberOfRows, numberOfColumns, numberOfMines);
 
         field = fieldCreator.generate();
-        Arrays.stream(field).forEach(fields -> Arrays.stream(fields).forEach(field -> add(field)));
 
-        this.fieldExposer.setField(field);
+
+        FieldRevealer[][] fieldRevealers = new FieldRevealer[numberOfRows][numberOfColumns];
+
+        // create button field
+        Arrays.stream(field).forEach(fields -> Arrays.stream(fields).forEach(field -> {
+            FieldButton fieldButton = field instanceof Mine ? new MineButton(imageManager, fieldExposer, (Mine) field) : new ValueButton(imageManager, fieldExposer, (Value) field);
+            add(fieldButton);
+            fieldRevealers[field.position.left()][field.position.rightInt()] = fieldButton;
+        }));
+
+        this.fieldRevealers = fieldRevealers;
+        this.fieldExposer.setField(fieldRevealers);
     }
 
     /**

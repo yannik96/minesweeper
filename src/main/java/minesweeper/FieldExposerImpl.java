@@ -2,16 +2,14 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-/**
- * Class performing the revelation of a field and potentially surrounding fields.
- **/
 public class FieldExposerImpl implements FieldExposer {
 
     private VictoryChecker victoryChecker;
     private BoundaryChecker boundaryChecker;
-    private Field[][] field;
 
-    public FieldExposerImpl(VictoryChecker victoryChecker, BoundaryChecker boundaryChecker, Field[][] field) {
+    private FieldRevealer[][] field;
+
+    public FieldExposerImpl(VictoryChecker victoryChecker, BoundaryChecker boundaryChecker, FieldRevealer[][] field) {
         this.victoryChecker = victoryChecker;
         this.boundaryChecker = boundaryChecker;
         this.field = field;
@@ -19,48 +17,28 @@ public class FieldExposerImpl implements FieldExposer {
 
     @Override
     public void revealEntireField() {
-        for (Field[] fields : field) {
-            for (Field field : fields) {
-                field.reveal();
+        this.victoryChecker.setLost();
+
+        for (FieldRevealer[] fieldRevealers : this.field) {
+            for (FieldRevealer fieldRevealer : fieldRevealers) {
+                fieldRevealer.reveal();
             }
         }
     }
 
     @Override
-    public void revealValue(Value field) {
-        field.reveal();
-
-        if (field.isEmpty()) {
-            revealSurroundingFields(field);
-        }
-
+    public void revealedValue() {
         this.victoryChecker.checkVictory();
     }
 
     @Override
-    public void revealMine(Mine field) {
-        if (canRevealField(field)) {
-            field.reveal();
-        }
-
-        this.victoryChecker.setLost();
-    }
-
-    @Override
-    public void tagField(Field field) {
+    public void taggedField() {
         this.victoryChecker.checkVictory();
     }
 
-    @Override
-    public void setField(Field[][] field) {
-        this.field = field;
-    }
-
-    private void revealSurroundingFields(Field revealedField) {
-        IntIntImmutablePair revealedPosition = revealedField.getPosition();
-
-        int revealedRow = revealedPosition.leftInt();
-        int revealedColumn = revealedPosition.rightInt();
+    public void revealSurroundingFields(IntIntImmutablePair position) {
+        int revealedRow = position.leftInt();
+        int revealedColumn = position.rightInt();
 
         for (int row = revealedRow - 1; row <= revealedRow + 1; row++) {
             for (int column = revealedColumn - 1; column <= revealedColumn + 1; column++) {
@@ -71,8 +49,9 @@ public class FieldExposerImpl implements FieldExposer {
         }
     }
 
-    private boolean canRevealField(Field field) {
-        return !field.isRevealed() && !field.isTagged();
+    @Override
+    public void setField(FieldRevealer[][] field) {
+        this.field = field;
     }
 
 }

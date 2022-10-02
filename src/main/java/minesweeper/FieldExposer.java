@@ -1,15 +1,17 @@
 package minesweeper;
 
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+
+
 public interface FieldExposer {
+
+    void revealSurroundingFields(IntIntImmutablePair position);
 
     void revealEntireField();
 
-    void revealValue(Value field);
+    void revealedValue();
 
-    void revealMine(Mine field);
+    void taggedField();
 
-    void tagField(Field field);
-
-    void setField(Field[][] field);
-
+    void setField(FieldRevealer[][] field);
 }

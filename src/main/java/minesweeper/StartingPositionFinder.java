@@ -21,11 +21,6 @@ public class StartingPositionFinder {
         this.field = field;
     }
 
-    public void revealStartingPosition() {
-        IntIntImmutablePair startingPosition = this.find();
-        field[startingPosition.leftInt()][startingPosition.rightInt()].reveal();
-    }
-
     public IntIntImmutablePair find() {
         findAllPossibleStartingPositions();
         return randomlySelectStartingPosition();
