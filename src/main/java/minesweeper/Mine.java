@@ -2,9 +2,6 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-/**
- * A class representing a mine.
- **/
 public class Mine extends Field {
 
     public Mine(FieldExposer fieldExposer, IntIntImmutablePair position) {

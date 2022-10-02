@@ -3,9 +3,6 @@ package minesweeper;
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
 
-/**
- * A class representing a value, i.e. fields that are not a mine.
- **/
 public class Value extends Field {
 
     private int value = 0;
@@ -27,7 +24,7 @@ public class Value extends Field {
     }
 
     public boolean isIncorrectlyTagged() {
-        return revealed && isTagged();
+        return isTagged();
     }
 
     @Override

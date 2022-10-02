@@ -54,17 +54,17 @@ public abstract class FieldButton extends JButton implements FieldRevealer {
     }
 
     public void tagField() {
-        this.setIcon(this.imageManager.getImage(FieldImage.FLAG));
         this.setEnabled(false);
         this.setBackground(Color.WHITE);
         this.setTagged(true);
+        this.setImageIcon(this.imageManager.getImage(FieldImage.FLAG));
 
-        this.fieldExposer.taggedField();
         this.field.setTagged(true);
+        this.fieldExposer.taggedField();
     }
 
     public void untagField() {
-        this.setIcon(this.imageManager.getImage(FieldImage.EMPTY));
+        this.setImageIcon(this.imageManager.getImage(FieldImage.EMPTY));
         this.setEnabled(true);
         this.setBackground(Color.GRAY);
         this.setTagged(false);
