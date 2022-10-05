@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * A class defining the application interface and basic game logic.
  **/
-public class Minesweeper extends JFrame {
+public class Minesweeper extends JFrame implements VictorySetter {
 
     /**
      * General difficulty settings.
@@ -168,6 +168,11 @@ public class Minesweeper extends JFrame {
     public void setLost() {
         this.stopGame();
         JOptionPane.showMessageDialog(null, "You have lost.", "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public boolean shouldCheckVictory() {
+        return this.isRunning();
     }
 
     private void stopGame() {

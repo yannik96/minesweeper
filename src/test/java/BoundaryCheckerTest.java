@@ -58,4 +58,45 @@ class BoundaryCheckerTest {
         assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-12, 34)));
         assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(323, -34)));
     }
+
+    @Test
+    void testIsWithinBounds2() {
+        BoundaryChecker boundaryChecker = new BoundaryChecker(35, 20);
+
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(5, 5)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(0, 0)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(0, 9)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(9, 9)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(9, 0)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(1, 1)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(8, 8)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(1, 8)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(4, 2)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(30, 15)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(15, 10)));
+
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(10, 9)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(11, 9)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(9, 10)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(9, 11)));
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(10, 10)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(1023, 923)));
+
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-1, 0)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-13, 0)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(0, -1)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(0, -23)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-393, -283)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-12, 34)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(3223, -324)));
+
+        assertTrue(boundaryChecker.isInBounds(new IntIntImmutablePair(34, 19)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(35, 19)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(34, 20)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(35, 20)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(35, 0)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(0, 20)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(34, -1)));
+        assertFalse(boundaryChecker.isInBounds(new IntIntImmutablePair(-1, 19)));
+    }
 }

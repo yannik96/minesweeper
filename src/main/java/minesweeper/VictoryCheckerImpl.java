@@ -2,30 +2,29 @@ package minesweeper;
 
 public class VictoryCheckerImpl implements VictoryChecker {
 
-    private Minesweeper minesweeper;
+    private VictorySetter victorySetter;
 
-    public VictoryCheckerImpl(Minesweeper minesweeper) {
-        this.minesweeper = minesweeper;
+    public VictoryCheckerImpl(VictorySetter victorySetter) {
+        this.victorySetter = victorySetter;
     }
 
     @Override
     public void checkVictory() {
-        if (this.isGameWon() && this.minesweeper.isRunning()) {
-            this.minesweeper.setWon();
+        if (this.victorySetter.shouldCheckVictory() && this.isGameWon()) {
+            this.victorySetter.setWon();
         }
     }
 
     @Override
     public void setLost() {
-        this.minesweeper.setLost();
+        this.victorySetter.setLost();
     }
 
     /**
      * Checks whether the game is won.
      **/
     private boolean isGameWon() {
-        System.out.println("---------------------------------------------------");
-        for (Field[] fields : this.minesweeper.getField()) {
+        for (Field[] fields : this.victorySetter.getField()) {
             for (Field field : fields) {
                 // there exists a field that has not been clicked yet (right or left)
                 if (!field.isRevealed() && !field.isTagged()) {
