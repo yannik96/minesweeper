@@ -2,58 +2,43 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-import javax.swing.*;
 
-/** A class representing a value, i.e. fields that are not a mine. **/
 public class Value extends Field {
-	
-	private int value = 0;
 
-	public Value(final Minesweeper minesweeper, IntIntImmutablePair position) {
-		super(minesweeper, position);
+    private int value = 0;
 
-		addActionListener(e -> {
-			this.minesweeper.revealField(((Field) e.getSource()));
-			minesweeper.checkVictory();
-		});
-	}
+    public Value(FieldExposer fieldExposer, IntIntImmutablePair position) {
+        super(fieldExposer, position);
+    }
 
-	@Override
-	public void reveal() {
-		if (revealed || !minesweeper.isRunning()) {
-			return;
-		}
+    @Override
+    public void reveal() {
+        if (this.canBeRevealed()) {
+            revealed = true;
+            this.fieldExposer.revealedValue();
 
-		revealed = true;
+            if (this.isEmpty()) {
+                this.fieldExposer.revealSurroundingFields(this.position);
+            }
+        }
+    }
 
-		if (this.isTagged()) {
-			setIncorrectlyTagged();
-		} else {
-			revealButton();
-		}
+    public boolean isIncorrectlyTagged() {
+        return isTagged();
+    }
 
-		this.minesweeper.revealField(this);
-	}
+    @Override
+    public void increaseValue() {
+        value++;
+    }
 
-	private void setIncorrectlyTagged() {
-		// TODO: central resource manager
-		ImageIcon noMineIcon = new ImageIcon(getClass().getClassLoader().getResource("nomine.png"));
-		this.setIcon(noMineIcon);
-		this.setDisabledIcon(noMineIcon);
-	}
+    @Override
+    public boolean isEmpty() {
+        return value == 0;
+    }
 
-	@Override
-	public void increaseValue() {
-		value++;
-		updateImageFile();
-	}
-	private void updateImageFile() {
-		imageFile = value + ".png";
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return value == 0;
-	}
+    public int getValue() {
+        return value;
+    }
 
 }

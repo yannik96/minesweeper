@@ -2,99 +2,58 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+public abstract class Field implements FieldRevealer {
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.SwingUtilities;
+    protected FieldExposer fieldExposer;
 
-/** Class representing a minesweeper field. **/
-public abstract class Field extends JButton {
-	
-	protected Minesweeper minesweeper;
+    protected IntIntImmutablePair position;
 
-	protected String imageFile;
+    protected boolean isRunning = false;
+    protected boolean revealed = false;
+    protected boolean tagged = false;
 
 
-	protected boolean revealed = false;
-	protected boolean tagged = false;
-	protected IntIntImmutablePair position;
+    public Field(FieldExposer fieldExposer, IntIntImmutablePair position) {
+        this.fieldExposer = fieldExposer;
+        this.position = position;
+    }
 
-	public Field(Minesweeper minesweeper, IntIntImmutablePair position) {
-		this.minesweeper = minesweeper;
-		this.position = position;
+    public abstract void increaseValue();
 
-		this.initializeListener();
-	}
+    public abstract boolean isEmpty();
 
-	private void initializeListener() {
-		// add listener for mouse right clicks
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent event) {
-				if (SwingUtilities.isRightMouseButton(event)) {
-					onRightClick((Field) event.getComponent());
-				}
-			}
-		});
-	}
+    public abstract void reveal();
 
-	private void onRightClick(Field taggedField) {
-		if (!minesweeper.isRunning()) {
-			return;
-		}
+    public boolean isTagged() {
+        return tagged;
+    }
 
-		// if field is clickable, tag it with a flag; otherwise undo tagging with a flag because currently flagged
-		if (taggedField.isEnabled()) {
-			taggedField.setEnabled(false);
-			ImageIcon flagIcon = new ImageIcon(getClass().getClassLoader().getResource("flag.png"));
-			taggedField.setIcon(flagIcon);
-			taggedField.setDisabledIcon(flagIcon);
-			taggedField.setBackground(Color.WHITE);
-			minesweeper.checkVictory();
-			taggedField.changeTagged();
-		} else if (taggedField.isTagged()){
-			taggedField.setIcon(new ImageIcon(""));
-			taggedField.setDisabledIcon(new ImageIcon(""));
-			taggedField.setEnabled(true);
-			taggedField.setBackground(Color.GRAY);
-			taggedField.changeTagged();
-		}
-	}
+    public boolean isRevealed() {
+        return revealed;
+    }
 
-	/** Increases the value of the field if applicable. **/
-	public abstract void increaseValue();
+    public boolean isRunning() {
+        return isRunning;
+    }
 
-	/** Different semantics depending on type of field, e.g. Mine or Field. **/
-	public abstract void reveal();
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
 
-	public abstract boolean isEmpty();
+    public IntIntImmutablePair getPosition() {
+        return position;
+    }
 
-	/** Called if the field is being revealed. Display value. **/
-	protected void revealButton() {
-		setEnabled(false);
-		ImageIcon valueIcon = imageFile == null? new ImageIcon("") : new ImageIcon(getClass().getClassLoader().getResource(imageFile));
-		setIcon(valueIcon);
-		setDisabledIcon(valueIcon);
-		setBackground(Color.WHITE);
-	}
+    public void setRunning(boolean running) {
+        this.isRunning = running;
+    }
 
-	public void changeTagged() {
-		tagged = !tagged;
-	}
+    public boolean canBeRevealed() {
+        return this.isRunning && !this.isRevealed() && !this.isTagged();
+    }
 
-	public boolean isTagged() {
-		return tagged;
-	}
+    public boolean isNotRevealed() {
+        return !this.isRevealed();
+    }
 
-	public boolean isRevealed() {
-		return revealed;
-	}
-
-	public IntIntImmutablePair getPosition() {
-		return position;
-	}
-	
 }
