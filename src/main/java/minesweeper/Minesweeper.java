@@ -2,6 +2,7 @@ package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import minesweeper.enums.Difficulty;
+import minesweeper.enums.FieldConfig;
 import minesweeper.ui.FieldButton;
 import minesweeper.ui.ImageManager;
 import minesweeper.ui.MineButton;
@@ -17,27 +18,7 @@ import java.util.Arrays;
  **/
 public class Minesweeper extends JFrame implements VictorySetter {
 
-    /**
-     * General difficulty settings.
-     **/
-    public static final int EASY_ROWS = 9;
-    public static final int EASY_COLUMNS = 9;
-    public static final int EASY_MINES = 10;
-
-    public static final int ADVANCED_ROWS = 16;
-    public static final int ADVANCED_COLUMNS = 16;
-    public static final int ADVANCED_MINES = 40;
-
-    public static final int EXPERT_ROWS = 16;
-    public static final int EXPERT_COLUMNS = 32;
-    public static final int EXPERT_MINES = 99;
-
-
-    private Difficulty difficulty;
-
-    private int numberOfRows;
-    private int numberOfColumns;
-    private int numberOfMines;
+    private final FieldConfig fieldConfig;
 
     private Field[][] field;
     private FieldRevealer[][] fieldRevealers;
@@ -45,20 +26,18 @@ public class Minesweeper extends JFrame implements VictorySetter {
     public static int WIDTH;
     public static int HEIGHT;
 
-    private FieldExposerImpl fieldExposer;
-
     private boolean running;
 
 
     public Minesweeper() {
         super("Minesweeper");
-        difficulty = Difficulty.EASY;
+        this.fieldConfig = FieldConfig.getEasyConfig();
         initialize();
     }
 
     public Minesweeper(Difficulty difficulty) {
         super("Minesweeper");
-        this.difficulty = difficulty;
+        this.fieldConfig = FieldConfig.getConfig(difficulty);
         initialize();
     }
 
@@ -69,38 +48,21 @@ public class Minesweeper extends JFrame implements VictorySetter {
     }
 
     public void setDimension() {
-        switch (difficulty) {
-            case EASY:
-                numberOfRows = EASY_ROWS;
-                numberOfColumns = EASY_COLUMNS;
-                numberOfMines = EASY_MINES;
-                break;
-            case ADVANCED:
-                numberOfRows = ADVANCED_ROWS;
-                numberOfColumns = ADVANCED_COLUMNS;
-                numberOfMines = ADVANCED_MINES;
-                break;
-            case EXPERT:
-                numberOfRows = EXPERT_ROWS;
-                numberOfColumns = EXPERT_COLUMNS;
-                numberOfMines = EXPERT_MINES;
-                break;
-        }
-        WIDTH = 40 * numberOfColumns;
-        HEIGHT = 40 * numberOfRows;
+        WIDTH = 40 * fieldConfig.numberColumns();
+        HEIGHT = 40 * fieldConfig.numberRows();
     }
 
     private void createWindow() {
         setSize(WIDTH, HEIGHT);
         Container pane = getContentPane();
-        pane.setLayout(new GridLayout(numberOfRows, numberOfColumns));
+        pane.setLayout(new GridLayout(fieldConfig.numberRows(), fieldConfig.numberColumns()));
         setLocationRelativeTo(null);
         createMenu();
         setVisible(true);
     }
 
     private void createMenu() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menuNew = new JMenu("New Game");
@@ -133,15 +95,15 @@ public class Minesweeper extends JFrame implements VictorySetter {
     }
 
     private void createField() {
+        FieldExposerImpl fieldExposer;
         ImageManager imageManager = new ImageManager();
         // TODO:
-        this.fieldExposer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(numberOfRows, numberOfColumns), field);
-        FieldCreator fieldCreator = new FieldCreator(this.fieldExposer, numberOfRows, numberOfColumns, numberOfMines);
+        fieldExposer = new FieldExposerImpl(new VictoryCheckerImpl(this), new BoundaryChecker(fieldConfig.numberRows(), fieldConfig.numberColumns()), field);
+        FieldCreator fieldCreator = new FieldCreator(fieldExposer, this.fieldConfig);
 
         field = fieldCreator.generate();
 
-
-        FieldRevealer[][] fieldRevealers = new FieldRevealer[numberOfRows][numberOfColumns];
+        FieldRevealer[][] fieldRevealers = new FieldRevealer[fieldConfig.numberRows()][fieldConfig.numberColumns()];
 
         // create button field
         Arrays.stream(field).forEach(fields -> Arrays.stream(fields).forEach(field -> {
@@ -151,7 +113,7 @@ public class Minesweeper extends JFrame implements VictorySetter {
         }));
 
         this.fieldRevealers = fieldRevealers;
-        this.fieldExposer.setField(fieldRevealers);
+        fieldExposer.setField(fieldRevealers);
     }
 
     /**

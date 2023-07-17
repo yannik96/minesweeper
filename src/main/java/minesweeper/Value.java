@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
 public class Value extends Field {
 
-    private int value = 0;
+    private int fieldValue = 0;
 
     public Value(FieldExposer fieldExposer, IntIntImmutablePair position) {
         super(fieldExposer, position);
@@ -29,16 +29,16 @@ public class Value extends Field {
 
     @Override
     public void increaseValue() {
-        value++;
+        fieldValue++;
     }
 
     @Override
     public boolean isEmpty() {
-        return value == 0;
+        return fieldValue == 0;
     }
 
-    public int getValue() {
-        return value;
+    public int getFieldValue() {
+        return fieldValue;
     }
 
 }

@@ -2,7 +2,7 @@ package minesweeper;
 
 public class VictoryCheckerImpl implements VictoryChecker {
 
-    private VictorySetter victorySetter;
+    private final VictorySetter victorySetter;
 
     public VictoryCheckerImpl(VictorySetter victorySetter) {
         this.victorySetter = victorySetter;
