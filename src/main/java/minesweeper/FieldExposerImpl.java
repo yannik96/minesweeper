@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 
 public class FieldExposerImpl implements FieldExposer {
 
-    private VictoryChecker victoryChecker;
-    private BoundaryChecker boundaryChecker;
+    private final VictoryChecker victoryChecker;
+    private final BoundaryChecker boundaryChecker;
 
     private FieldRevealer[][] field;
 

@@ -1,6 +1,7 @@
 package minesweeper;
 
 import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
+import minesweeper.enums.FieldConfig;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -11,27 +12,21 @@ import java.util.Set;
  **/
 public class FieldCreator {
 
-    private FieldExposer fieldExposer;
+    private final FieldExposer fieldExposer;
 
-    private int numberOfRows;
-    private int numberOfColumns;
-
-    private int numberOfMines;
-
+    private final FieldConfig fieldConfig;
     private Field[][] field;
-    private Set<IntIntImmutablePair> mines = new HashSet<>();
+    private final Set<IntIntImmutablePair> mines = new HashSet<>();
 
-    private Random generator = new Random();
+    private final Random generator = new Random();
 
-    public FieldCreator(FieldExposer fieldExposer, int rows, int columns, int mines) {
+    public FieldCreator(FieldExposer fieldExposer, FieldConfig fieldConfig) {
         this.fieldExposer = fieldExposer;
-        this.numberOfRows = rows;
-        this.numberOfColumns = columns;
-        this.numberOfMines = mines;
+        this.fieldConfig = fieldConfig;
     }
 
     public Field[][] generate() {
-        this.field = new Field[this.numberOfRows][this.numberOfColumns];
+        this.field = new Field[fieldConfig.numberRows()][fieldConfig.numberColumns()];
 
         generateMines();
         setField();
@@ -41,13 +36,13 @@ public class FieldCreator {
     }
 
     private void generateMines() {
-        while (mines.size() < numberOfMines) {
+        while (mines.size() < fieldConfig.numberMines()) {
             generateMine();
         }
     }
 
     private void generateMine() {
-        IntIntImmutablePair position = new IntIntImmutablePair(generator.nextInt(numberOfRows), generator.nextInt(numberOfColumns));
+        IntIntImmutablePair position = new IntIntImmutablePair(generator.nextInt(fieldConfig.numberRows()), generator.nextInt(fieldConfig.numberColumns()));
         if (!isPositionAMine(position)) {
             mines.add(position);
         }
@@ -61,8 +56,8 @@ public class FieldCreator {
      * Set field classes to be either mines or fields.
      **/
     private void setField() {
-        for (int row = 0; row < numberOfRows; row++) {
-            for (int column = 0; column < numberOfColumns; column++) {
+        for (int row = 0; row < fieldConfig.numberRows(); row++) {
+            for (int column = 0; column < fieldConfig.numberColumns(); column++) {
                 IntIntImmutablePair position = new IntIntImmutablePair(row, column);
 
                 if (isPositionAMine(position)) {
@@ -75,8 +70,8 @@ public class FieldCreator {
     }
 
     private void calculateFieldValues() {
-        for (int row = 0; row < numberOfRows; row++) {
-            for (int column = 0; column < numberOfColumns; column++) {
+        for (int row = 0; row < fieldConfig.numberRows(); row++) {
+            for (int column = 0; column < fieldConfig.numberColumns(); column++) {
                 IntIntImmutablePair position = new IntIntImmutablePair(row, column);
 
                 if (isPositionAMine(position)) {
@@ -87,7 +82,7 @@ public class FieldCreator {
     }
 
     private void increaseValueInSurroundingFields(IntIntImmutablePair centerPosition) {
-        BoundaryChecker boundaryChecker = new BoundaryChecker(numberOfRows, numberOfColumns);
+        BoundaryChecker boundaryChecker = new BoundaryChecker(fieldConfig.numberRows(), fieldConfig.numberColumns());
 
         int centerRow = centerPosition.leftInt();
         int centerColumn = centerPosition.rightInt();

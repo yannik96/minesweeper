@@ -11,11 +11,11 @@ import java.util.Random;
  **/
 public class StartingPositionFinder {
 
-    private Field[][] field;
+    private final Field[][] field;
 
-    private Random generator = new Random();
+    private final Random generator = new Random();
 
-    private ArrayList<IntIntImmutablePair> emptyFields = new ArrayList<>();
+    private final ArrayList<IntIntImmutablePair> emptyFields = new ArrayList<>();
 
     public StartingPositionFinder(Field[][] field) {
         this.field = field;

@@ -13,7 +13,7 @@ public abstract class Field implements FieldRevealer {
     protected boolean tagged = false;
 
 
-    public Field(FieldExposer fieldExposer, IntIntImmutablePair position) {
+    protected Field(FieldExposer fieldExposer, IntIntImmutablePair position) {
         this.fieldExposer = fieldExposer;
         this.position = position;
     }
@@ -21,8 +21,6 @@ public abstract class Field implements FieldRevealer {
     public abstract void increaseValue();
 
     public abstract boolean isEmpty();
-
-    public abstract void reveal();
 
     public boolean isTagged() {
         return tagged;

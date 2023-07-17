@@ -16,7 +16,7 @@ public class ValueButton extends FieldButton {
         super(imageManager, fieldExposer, value);
 
         this.value = value;
-        this.imageIcon = this.imageManager.getImage(this.getFieldImage(value.getValue()));
+        this.imageIcon = this.imageManager.getImage(this.getFieldImage(value.getFieldValue()));
     }
 
     @Override
